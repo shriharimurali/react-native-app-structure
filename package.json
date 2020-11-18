@@ -1,0 +1,65 @@
+{
+  "name": "react_native_project_structure",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "android": "react-native run-android",
+    "ios": "react-native run-ios",
+    "start": "react-native start",
+    "start:nocache": "npm run start -- --reset-cache",
+    "test": "jest --forceExit",
+    "test:debug": "jest --runInBand --detectOpenHandles",
+    "test:watchall": "npm run test:debug -- --watchAll",
+    "test:watch": "npm run test:debug -- --watchAll",
+    "lint": "eslint index.js src",
+    "clean:android": "cd android && ./gradlew clean",
+    "clean:ios": "cd ios && xcodebuild clean",
+    "clean:all": "watchman watch-del-all && rm -rf /tmp/metro-* && npm run clean:android && npm run clean:ios"
+  },
+  "dependencies": {
+    "react": "16.13.1",
+    "react-native": "0.63.3"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.3",
+    "@babel/runtime": "^7.12.5",
+    "@react-native-community/eslint-config": "^2.0.0",
+    "babel-jest": "^26.6.3",
+    "eslint": "^7.13.0",
+    "jest": "^26.6.3",
+    "metro-react-native-babel-preset": "^0.64.0",
+    "react-test-renderer": "16.13.1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "./src/**/*.{js,jsx,ts,tsx}": [
+      "npx prettier --write",
+      "eslint src/**/*.js --fix-dry-run"
+    ]
+  },
+  "jest": {
+    "rootDir": "./",
+    "preset": "react-native",
+    "transform": {
+      "^.+\\.js$": "babel-jest"
+    },
+    "transformIgnorePatterns": [
+      "node_modules/(?!(jest-)?react-native|@react-native-community|@react-navigation)"
+    ],
+    "setupFiles": [
+      "./node_modules/react-native-gesture-handler/jestSetup.js",
+      "./src/jestSetup.js"
+    ],
+    "setupFilesAfterEnv": [
+      "./src/jestSetup.js"
+    ],
+    "moduleNameMapper": {
+      "^.+\\.(bmp|gif|jpg|jpeg|png|psd|svg|webp)$": "<rootDir>/__mocks__/fileMock.js"
+    },
+    "timers": "fake"
+  }
+}
